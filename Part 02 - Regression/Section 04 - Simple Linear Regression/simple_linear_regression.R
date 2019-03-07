@@ -8,26 +8,26 @@ dataset = read.csv('Salary_Data.csv')
 library(caTools)
 set.seed(123)
 split = sample.split(dataset$Salary, SplitRatio = 2/3)
-training_set = subset(dataset, split == TRUE)
-test_set = subset(dataset, split == FALSE)
+trainingSet = subset(dataset, split == TRUE)
+testSet = subset(dataset, split == FALSE)
 
-# Feature Scaling
-# training_set = scale(training_set)
-# test_set = scale(test_set)
+# Feature Scaling is not necessary for SIMPLE LINEAR regression
+# trainingSet = scale(trainingSet)
+# testSet = scale(testSet)
 
 # Fitting Simple Linear Regression to the Training set
 regressor = lm(formula = Salary ~ YearsExperience,
-               data = training_set)
+               data = trainingSet)
 
 # Predicting the Test set results
-y_pred = predict(regressor, newdata = test_set)
+yPred = predict(regressor, newdata = testSet)
 
 # Visualising the Training set results
 library(ggplot2)
 ggplot() +
-  geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
+  geom_point(aes(x = trainingSet$YearsExperience, y = trainingSet$Salary),
              colour = 'red') +
-  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
+  geom_line(aes(x = trainingSet$YearsExperience, y = predict(regressor, newdata = trainingSet)),
             colour = 'blue') +
   ggtitle('Salary vs Experience (Training set)') +
   xlab('Years of experience') +
@@ -36,9 +36,9 @@ ggplot() +
 # Visualising the Test set results
 library(ggplot2)
 ggplot() +
-  geom_point(aes(x = test_set$YearsExperience, y = test_set$Salary),
+  geom_point(aes(x = testSet$YearsExperience, y = testSet$Salary),
              colour = 'red') +
-  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
+  geom_line(aes(x = trainingSet$YearsExperience, y = predict(regressor, newdata = trainingSet)),
             colour = 'blue') +
   ggtitle('Salary vs Experience (Test set)') +
   xlab('Years of experience') +

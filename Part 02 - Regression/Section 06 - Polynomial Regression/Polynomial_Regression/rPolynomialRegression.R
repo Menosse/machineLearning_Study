@@ -27,8 +27,10 @@ polyReg = lm(formula = Salary ~.,
              data = dataset)
 
 # Install graphs library
-install.packages('ggplot2')
+# install.packages('ggplot2')
 
+# Add graph library
+library(ggplot2)
 # Visualize linear regression model
 ggplot() +
   geom_point(aes(x = dataset$Level, y = dataset$Salary),
@@ -52,7 +54,7 @@ ggplot()+
 # Predict a new result using linear regression
 yPred = predict(linReg, data.frame(Level = 6.5))
 
-# Creating new dataset
+# Creating new dataset and using it to predict with Linear regression
 newDataSet = data.frame(Level = 6.5)
 yPred = predict(linReg, newDataSet)
 
@@ -62,6 +64,6 @@ yPred = predict(polyReg, data.frame(Level = 6.5,
                                     Level3 = 6.5^3,
                                     Level4 = 6.5^4))
 
-# Creating new dataset
+# Creating new dataset and using it to predict with POLYNOMIAL REGRESSION
 newDataSet = data.frame(Level = 6.5, Level2 = 6.5^2, Level3 = 6.5^3, Level4 = 6.5^4)
 yPred = predict(polyReg, newDataSet)
