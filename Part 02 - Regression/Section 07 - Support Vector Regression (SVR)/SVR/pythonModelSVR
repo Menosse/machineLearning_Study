@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Mar  8 07:32:20 2019
+
+@author: ts-fernando.takada
+"""
+
+# Regression Template
+
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Importing the dataset
+dataset = pd.read_csv('Position_Salaries.csv')
+x = dataset.iloc[:, 1:2].values
+y = dataset.iloc[:, 2:3].values
+
+# Feature Scaling
+from sklearn.preprocessing import StandardScaler
+scX = StandardScaler()
+scY = StandardScaler()
+x = scX.fit_transform(x)
+y = scY.fit_transform(y)
+
+# Fitting the SVR to the dataset
+from sklearn.svm import SVR
+regressor = SVR(kernel = 'rbf')
+regressor.fit(x, y)
+
+# !!Predicting a new result!!
+y_pred = scY.inverse_transform(
+        regressor.predict(
+                scX.transform(
+                        np.array( [[6.5]] )
+                        )))
+
+# Visualising the Regression results
+plt.scatter(x, y, color = 'red')
+plt.plot(x, regressor.predict(x), color = 'blue')
+plt.title('Truth or Bluff (SVR)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+
+# Visualising the SVR results (for higher resolution and smoother curve)
+X_grid = np.arange(min(x), max(x), 0.1)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(x, y, color = 'red')
+plt.plot(X_grid, regressor.predict(X_grid), color = 'blue')
+plt.title('Truth or Bluff (SVR Model)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()

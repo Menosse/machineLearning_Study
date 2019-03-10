@@ -29,9 +29,7 @@ ggplot()+
              colour = 'red') +
   geom_line(aes(x = trainSet$YearsExperience, y = predict(linReg, newdata = trainSet)),
             colour = 'blue')
-  
-  
-  
+
 # Visualising the Test set results
   ggplot()+
   ggtitle("Salary x Experience (Training Set)") +

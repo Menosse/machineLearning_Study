@@ -1,4 +1,4 @@
-# Simple linear regression
+# Multiple linear regression
 
 # DATA PREPROCESSING
 
@@ -16,18 +16,10 @@ set.seed(123)
 split = sample.split(dataset$Profit, SplitRatio = 0.8)
 trainingSet = subset(dataset, split == TRUE)
 testSet = subset(dataset, split == FALSE)
-
-# # Feature Scaling - !!Simple linear regression does not need feature scaling!!
-# # For this case we do not need feature scaling, the library will do it to us
-# trainingSet[, 2:3] = scale(trainingSet[, 2:3])
-# testSet[, 2:3] = scale(testSet[, 2:3])
  
-# # Fitting Multiple !Linear combination! Regression to the Training set as a 
-# regressor = lm(formula = Profit ~ R.D.Spend + Administration + Marketing.Spend + State)
-# # To represent the formula aboce faster use the expression below
+# # To represent the formula faster use the expression below
 regressor = lm(formula = Profit ~ .,
                data = trainingSet)
-
 
 # Predicting the Test set results
 yPred = predict(regressor,
