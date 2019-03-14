@@ -36,7 +36,7 @@ plt.ylabel('Salary')
 plt.show()
 
 # Visualize the Polynomial Regression results
-xGrid = np.arange(min(x), max(x), 0.1)
+xGrid = np.arange(min(x), max(x), 0.01)
 xGrid = xGrid.reshape((len(xGrid), 1))
 plt.scatter(x, y, color = 'red')
 plt.plot(xGrid,linReg2.predict(polyReg.fit_transform(xGrid)), color = 'blue')
@@ -46,7 +46,7 @@ plt.ylabel('Salary')
 plt.show()
 
 # Predict a new result with Linear Regression
-linReg.predict(6.5)
+linReg.predict(np.array([[6.5]]))
 
 # Predict a new result with Polynomial regression
-linReg2.predict(polyReg.fit_transform(6.5))
+linReg2.predict(polyReg.fit_transform(np.array([[6.5]])))

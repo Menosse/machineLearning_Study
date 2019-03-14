@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 14 08:22:03 2019
+
+@author: ts-fernando.takada
+"""
+
+# Import library
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# Importing dataset
+dataset = pd.read_csv('Social_Network_Ads.csv')
+x = dataset.iloc[:, [2, 3]].values
+y = dataset.iloc[:, 4].values
+
+
+# Splitting the dataset into training set and test set
+from sklearn.model_selection import train_test_split
+xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size = 0.25, random_state = 0)
+
+
+# Apply feature scalling
+from sklearn.preprocessing import StandardScaler
+scX = StandardScaler()  
+xTrain = scX.fit_transform(xTrain)
+xTest = scX.fit_transform(xTest)
+
+
+# Fitting classifier to training set
+from sklearn.neighbors import KNeighborsClassifier
+classifier = KNeighborsClassifier(n_neighbors= 5, p = 2, metric = 'minkowski')
+classifier.fit(xTrain, yTrain)
+
+# Predict test set Results
+yPred = classifier.predict(xTest)
+
+
+# Making confusion Matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(yTest,yPred)
+
+
+# Plot classification
+from matplotlib.colors import ListedColormap
+# Create local variables
+xSet, ySet = xTrain, yTrain
+
+# Create Grid to avoid points being close to the border
+x1, x2 = np.meshgrid(np.arange(start = xSet[:, 0].min() - 1, stop = xSet[:, 0].max() + 1, step = 0.01),
+                     np.arange(start = xSet[:, 1].min() - 1, stop = xSet[:, 1].max() + 1, step = 0.01))
+
+# Create the areas using the linear prediction method
+plt.contourf(x1, x2, classifier.predict(np.array([x1.ravel(), x2.ravel()]).T).reshape(x1.shape),
+             alpha = 0.75, cmap = ListedColormap(('black', 'white')))
+
+# Ploting the predict points to the grid area
+plt.xlim(x1.min(), x1.max())
+plt.ylim(x2.min(), x2.max())
+for i, j in enumerate(np.unique(ySet)): 
+    plt.scatter(xSet[ySet == j, 0], xSet[ySet == j, 1],
+                c = ListedColormap(('red', 'green'))(i), label = j)
+
+# Defining title, label and leged
+plt.title('K-NN (Training Set)')
+plt.xlabel('age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+
+
+# Visualising the Test set results
+from matplotlib.colors import ListedColormap
+X_set, y_set = xTest, yTest
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),
+                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
+plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(), X2.ravel()]).T).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
+                c = ListedColormap(('orange', 'blue'))(i), label = j)
+plt.title('K-NN (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()

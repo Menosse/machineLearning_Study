@@ -40,6 +40,9 @@ regressor.fit(xTrain,yTrain)
 yPred = regressor.predict(xTest)
 
 # Building the optimal model using Backward Elimination
+
+# 3 fisrt models does are not good enough because the P-value and Adj-Rsquared are not
+# in the best fit to the model
 import statsmodels.formula.api as sm
 x = np.append(arr = np.ones((50,1)).astype(int), values = x, axis = 1 )
 xOpt =  x[:,[0, 1, 2, 3, 4, 5]]
@@ -54,6 +57,14 @@ xOpt =  x[:,[0, 3, 4, 5]]
 regressorOls = sm.OLS(endog= y, exog= xOpt).fit()
 regressorOls.summary()
 
+# This is the best model because the Adj-Rsquared and P-value has the higher importance
+# It means that for this dataset R.D. Spend and Marketing Spend are the most important
+# Variables to startup growth
 xOpt =  x[:,[0, 3, 5]]
+regressorOls = sm.OLS(endog= y, exog= xOpt).fit()
+regressorOls.summary()
+
+# This is not a good adjust because the Adj-Rsquared is lower
+xOpt =  x[:,[0, 3]]
 regressorOls = sm.OLS(endog= y, exog= xOpt).fit()
 regressorOls.summary()
