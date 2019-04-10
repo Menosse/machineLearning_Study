@@ -16,7 +16,7 @@ ads_selected = []
 numbers_of_selections = [0] * d
 sums_of_rewards = [0] * d
 total_reward = 0
-for n in range(0, N):
+for n in range (0, N):
     ad = 0
     max_upper_bound = 0
     for i in range(0, d):
